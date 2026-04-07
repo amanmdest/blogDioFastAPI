@@ -58,7 +58,7 @@ fake_db = [
 
 class Post(BaseModel):
     title: str
-    date: datetime = dt.now(datetime.timezone.utc)
+    date: dt | None = None
     published: bool
 
 
