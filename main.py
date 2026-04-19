@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 
+from controllers import post
+
 app = FastAPI()
-# app.routes([
-# ])
+app.include_router(post.router)

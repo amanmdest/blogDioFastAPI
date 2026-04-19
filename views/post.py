@@ -7,5 +7,4 @@ dt = datetime.datetime
 
 class PostOut(BaseModel):
     title: str
-    author: str
-    published_at: dt
+    date: dt
