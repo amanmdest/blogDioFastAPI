@@ -1,7 +1,7 @@
 import datetime
 import sqlalchemy as sa
 
-from database import metadata
+from src.database import metadata
 
 
 dt = datetime.datetime

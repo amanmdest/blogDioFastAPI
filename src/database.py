@@ -1,8 +1,10 @@
+import os
+
 import databases
 import sqlalchemy as sa
 
 
-DATABASE_URL = "sqlite:///./blog.db"
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./blog.db")
 
 metadata = sa.MetaData()
 database = databases.Database(DATABASE_URL)

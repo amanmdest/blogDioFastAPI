@@ -2,13 +2,13 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from controllers import post
-from database import database, engine, metadata
+from src.controllers import auth, post
+from src.database import database, engine, metadata
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    from models.post import posts
+    from src.models.post import posts
     await database.connect()
     metadata.create_all(engine)
     yield 
@@ -16,3 +16,4 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 app.include_router(post.router)
+app.include_router(auth.router)
