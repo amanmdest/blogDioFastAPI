@@ -16,6 +16,9 @@ class PostService:
         published_at = post.published_at or datetime.now(timezone.utc)
         updated_at = post.updated_at or datetime.now(timezone.utc)
 
+        print("PUBLISHED_AT TZINFO:", published_at.tzinfo)
+        print("UPDATED_AT TZINFO:", updated_at.tzinfo)
+
         command = posts.insert().values(
             title=post.title, 
             content=post.content,
