@@ -1,3 +1,7 @@
+from datetime import datetime, timezone
+
+import sqlalchemy as sa
+
 from databases.interfaces import Record
 from fastapi import HTTPException, status
 
@@ -8,11 +12,15 @@ from src.schemas.post import PostIn, PostPut
 
 class PostService:
     async def create(self, post: PostIn) -> None:
+        # Fallback to current timezone-aware time if None is provided
+        published_at = post.published_at or datetime.now(timezone.utc)
+        updated_at = post.updated_at or datetime.now(timezone.utc)
+
         command = posts.insert().values(
             title=post.title, 
             content=post.content,
-            published_at=post.published_at,
-            updated_at=post.updated_at,
+            published_at=published_at,
+            updated_at=updated_at,
             published=post.published,
         )
         return await database.execute(command)
@@ -36,6 +44,10 @@ class PostService:
             )
 
         data = post.model_dump(exclude_unset=True)
+
+        # Force updated_at to be explicitly timezone-aware on every update
+        data["updated_at"] = datetime.now(timezone.utc)
+
         command = posts.update().where(posts.c.id == id).values(**data)
         await database.execute(command)
 
@@ -48,8 +60,11 @@ class PostService:
     
 
     async def count(self, id: int) -> int:
-        query = "select count(id) as total from posts where id = :id"
-        result = await database.fetch_one(query, {"id": id})
+        # query = "select count(id) as total from posts where id = :id"
+        # result = await database.fetch_one(query, {"id": id})
+        # Use SQLAlchemy Core to generate the count query safely
+        query = sa.select(sa.func.count(posts.c.id)).where(posts.c.id == id)
+        result = await database.execute(query)  # returns the count integer directly
         return result.total
     
 
