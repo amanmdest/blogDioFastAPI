@@ -10,6 +10,6 @@ posts = sa.Table(
     sa.Column('title', sa.String(150), nullable=False, unique=True),
     sa.Column('content', sa.String, nullable=False),
     sa.Column('published_at', sa.TIMESTAMP(timezone=True), nullable=True),
-    sa.Column('updated_at', sa.DateTime, nullable=True),
+    sa.Column('updated_at', sa.TIMESTAMP(timezone=True), nullable=True),
     sa.Column('published', sa.Boolean, default=True),
 )
