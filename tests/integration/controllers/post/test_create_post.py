@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from fastapi import status
 from fastapi.encoders import isoformat
 from httpx import AsyncClient

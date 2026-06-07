@@ -1,12 +1,8 @@
-import datetime
-
 from fastapi import APIRouter, Depends, status
 from src.schemas.post import PostIn, PostPut
 from src.security import login_required
 from src.services.post import PostService
 from src.views.post import PostOut, PostUpdated
-
-dt = datetime.datetime
 
 router = APIRouter(prefix='/posts', tags=["posts"], dependencies=[Depends(login_required)])
 

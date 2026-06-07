@@ -1,10 +1,6 @@
-import datetime
 import sqlalchemy as sa
 
 from src.database import metadata
-
-
-dt = datetime.datetime
 
 
 posts = sa.Table(
@@ -13,7 +9,7 @@ posts = sa.Table(
     sa.Column('id', sa.Integer, primary_key=True),
     sa.Column('title', sa.String(150), nullable=False, unique=True),
     sa.Column('content', sa.String, nullable=False),
-    sa.Column('published_at', sa.DateTime, nullable=True),
+    sa.Column('published_at', sa.TIMESTAMP(timezone=True), nullable=True),
     sa.Column('updated_at', sa.DateTime, nullable=True),
-    sa.Column('published', sa.Boolean, default=False),
+    sa.Column('published', sa.Boolean, default=True),
 )
