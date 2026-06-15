@@ -4,6 +4,8 @@
 studies/
 .vscode/
 .db
+blog.db
+tests.db
 
 ### Python ###
 # Byte-compiled / optimized / DLL files

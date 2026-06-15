@@ -16,8 +16,8 @@ class PostService:
         published_at = post.published_at or datetime.now(timezone.utc)
         updated_at = post.updated_at or datetime.now(timezone.utc)
 
-        print("PUBLISHED_AT TZINFO:", published_at.tzinfo)
-        print("UPDATED_AT TZINFO:", updated_at.tzinfo)
+        # print("PUBLISHED_AT TZINFO:", published_at.tzinfo)
+        # print("UPDATED_AT TZINFO:", updated_at.tzinfo)
 
         command = posts.insert().values(
             title=post.title, 
@@ -65,10 +65,11 @@ class PostService:
     async def count(self, id: int) -> int:
         # query = "select count(id) as total from posts where id = :id"
         # result = await database.fetch_one(query, {"id": id})
-        # Use SQLAlchemy Core to generate the count query safely
+
+        # Using SQLAlchemy Core to generate the count query safely
         query = sa.select(sa.func.count(posts.c.id)).where(posts.c.id == id)
         result = await database.execute(query)  # returns the count integer directly
-        return result.total
+        return result
     
 
     async def __get_by_id(self, id) -> Record:
