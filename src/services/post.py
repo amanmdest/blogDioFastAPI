@@ -3,9 +3,9 @@ from datetime import datetime, timezone
 import sqlalchemy as sa
 
 from databases.interfaces import Record
-from fastapi import HTTPException, status
 
 from src.database import database
+from src.exceptions import NotFoundPostError
 from src.models.post import posts
 from src.schemas.post import PostIn, PostPut
 
@@ -41,10 +41,7 @@ class PostService:
     async def update(self, post: PostPut, id: int) -> Record:
         total = await self.count(id)       
         if not total:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, 
-                detail='Post Not Found'
-            )
+            raise NotFoundPostError
 
         data = post.model_dump(exclude_unset=True)
 
@@ -72,9 +69,9 @@ class PostService:
         return result
     
 
-    async def __get_by_id(self, id) -> Record:
+    async def __get_by_id(self, id: int) -> Record:
         query = posts.select().where(posts.c.id == id)
         post = await database.fetch_one(query)
         if not post:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+            raise NotFoundPostError
         return post
