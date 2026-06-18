@@ -50,14 +50,10 @@ app = FastAPI(
 app.include_router(post.router, tags=['posts'])
 app.include_router(auth.router)
 
-origins = [
-    'http://127.0.0.1:8000/',
-    'https://blogdiofastapi.onrender.com/',
-]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=['*'],
     allow_credentials=True,
     allow_methods=['*'],
     allow_headers=['*'],
