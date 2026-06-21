@@ -11,7 +11,6 @@ services = PostService()
 
 @router.post('/', status_code=status.HTTP_201_CREATED, response_model=PostOut)
 async def create_post(post: PostIn):
-    # return await services.create(post)
     return {**post.model_dump(), "id": await services.create(post)}
 
 

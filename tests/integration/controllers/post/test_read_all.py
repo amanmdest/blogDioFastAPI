@@ -16,10 +16,9 @@ async def populate_posts(db):
     await service.create(PostIn(title="post 3", content="some content", published=False))
 
 
-@pytest.mark.parametrize('published, total', [('on', 2), ('off', 1)] )
+@pytest.mark.parametrize('published, total', [('true', 2), ('false', 1)] )
 async def test_read_posts_by_status_success(client: AsyncClient, access_token:str, 
                                             published: str, total: int):
-    
     params = {'published': published, 'limit': total}
     headers = {'Authorization': f'Bearer {access_token}'}
 
@@ -29,6 +28,20 @@ async def test_read_posts_by_status_success(client: AsyncClient, access_token:st
 
     assert response.status_code == status.HTTP_200_OK
     assert len(content) == total
+
+
+@pytest.mark.parametrize('published, wrong_total', [('true', 1), ('false', 2)] )
+async def test_read_posts_by_status_wrong_total(client: AsyncClient, access_token:str,
+                                           published: str, wrong_total: int):
+    params = {'published': published, 'limit': 10}
+    headers = {'Authorization': f'Bearer {access_token}'}
+
+    response = await client.get('/posts/', params=params, headers=headers)
+
+    content = response.json()
+
+    assert response.status_code == status.HTTP_200_OK
+    assert len(content) != wrong_total
 
 
 async def test_read_posts_limit_success(client: AsyncClient, access_token: str):

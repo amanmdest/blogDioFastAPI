@@ -6,7 +6,7 @@ class PostIn(BaseModel):
     content: str
     published_at: AwareDatetime | None = None
     updated_at: AwareDatetime | None = None
-    published: bool = False
+    published: bool = True
 
 
 class PostPut(BaseModel):
