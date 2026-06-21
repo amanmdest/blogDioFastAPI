@@ -4,7 +4,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from src import database
+from src.database import database
 from src.controllers import auth, post
 from src.exceptions import NotFoundPostError
 
