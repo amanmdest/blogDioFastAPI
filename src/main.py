@@ -4,16 +4,16 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from src import database
 from src.controllers import auth, post
-# from src.database import database
 from src.exceptions import NotFoundPostError
 
 
-# @asynccontextmanager
-# async def lifespan(app: FastAPI):
-#     await database.connect()
-#     yield 
-#     await database.disconnect()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await database.connect()
+    yield 
+    await database.disconnect()
 
 
 tags_metadata = [
@@ -38,7 +38,7 @@ servers=[
 
 app = FastAPI(
     openapi_tags=tags_metadata,
-    # lifespan=lifespan,
+    lifespan=lifespan,
     servers=servers, 
     summary="Dio's favorite blog. Pucci said.",
     version='1.0.0',
